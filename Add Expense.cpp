@@ -1,4 +1,3 @@
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -53,9 +52,47 @@ void displayExpenses(vector<Expense> &expenses) {
     }
 }
 
+void deleteExpense(vector<Expense> & expenses){
+    if(expenses.empty()){
+        cout << "No Expense To Delete!";
+        return;
+}   
+    cout << ("\n===== All Expenses =====\n");
+    for(int i=0; i<expenses.size(); i++){
+        cout << i+1 <<"."
+        <<expenses[i].description
+        <<" | " << expenses[i].category
+        <<" | " << expenses[i].amount
+        <<" | " << expenses[i].date << endl;
+    }
+
+    int choice;
+    cout << "\nEnter the number of the expense to delete: ";
+    cin >> choice;
+
+    if(choice <1 || choice>expenses.size()){
+        cout << "\nInvalid  Choice!" << endl;
+        return;
+    }
+    cout << "Are you sure you want to delete: "
+    << expenses[choice-1].description
+    << "? (Y/N): ";
+
+    char confirm;
+    cin >> confirm;
+    if(confirm == 'Y'  || confirm == 'y'){
+        expenses.erase(expenses.begin() + (choice-1));
+        cout << "Expense deleted successfully!" << endl;
+    }else{
+        cout << "Deleteion cancelled!" << endl;
+    }
+}
+
+
+
 int main() {
     vector<Expense> expenses;
-    int choice;
+    //int choice;
 
     // Just to test the addExpense and displayExpenses functions!!
     // do {
@@ -84,6 +121,17 @@ int main() {
     //     }
 
     // } while (choice != 3);
+    
+    //Just to  test the delete function:
+    expenses.push_back({"2026-10-12", "Lunch", "Food", 150});
+    expenses.push_back({"2026-10-12", "Bus fare", "Transport", 50});
+    expenses.push_back({"2026-10-12", "Groceries", "Food", 500});
 
+    // Test deleteExpense only
+    deleteExpense(expenses);
+
+    // Check the remaining expenses
+    cout << "\nRemaining expenses:\n";
+    displayExpenses(expenses);
     return 0;
 }
