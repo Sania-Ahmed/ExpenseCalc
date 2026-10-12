@@ -1,18 +1,18 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-
 // Structure to hold expense details
-struct Expense {
+struct Expense
+{
     string date;
     string description;
     string category;
     double amount;
 };
 
-
 // Function to add an expense
-void addExpense(vector<Expense> &expenses) {
+void addExpense(vector<Expense> &expenses)
+{
     Expense e;
 
     cout << "Enter Date: ";
@@ -33,17 +33,19 @@ void addExpense(vector<Expense> &expenses) {
     cout << "Expense added successfully!" << endl;
 }
 
-
 // Function to display all expenses
-void displayExpenses(vector<Expense> &expenses) {
-    if (expenses.empty()) {
+void displayExpenses(vector<Expense> &expenses)
+{
+    if (expenses.empty())
+    {
         cout << "No expenses recorded yet!" << endl;
         return;
     }
 
     cout << "\n----- All Expenses -----\n";
 
-    for (int i = 0; i < expenses.size(); i++) {
+    for (int i = 0; i < expenses.size(); i++)
+    {
         cout << "\nExpense " << i + 1 << endl;
         cout << "Date: " << expenses[i].date << endl;
         cout << "Description: " << expenses[i].description << endl;
@@ -52,86 +54,133 @@ void displayExpenses(vector<Expense> &expenses) {
     }
 }
 
-void deleteExpense(vector<Expense> & expenses){
-    if(expenses.empty()){
+void deleteExpense(vector<Expense> &expenses)
+{
+    if (expenses.empty())
+    {
         cout << "No Expense To Delete!";
         return;
-}   
-    cout << ("\n===== All Expenses =====\n");
-    for(int i=0; i<expenses.size(); i++){
-        cout << i+1 <<"."
-        <<expenses[i].description
-        <<" | " << expenses[i].category
-        <<" | " << expenses[i].amount
-        <<" | " << expenses[i].date << endl;
     }
+    // replacing this with the displayExpenses function to avoid code duplication
+    // cout << ("\n===== All Expenses =====\n");
+    // for(int i=0; i<expenses.size(); i++){
+    //     cout << i+1 <<"."
+    //     <<expenses[i].description
+    //     <<" | " << expenses[i].category
+    //     <<" | " << expenses[i].amount
+    //     <<" | " << expenses[i].date << endl;
+    // }
 
+    displayExpenses(expenses);
     int choice;
     cout << "\nEnter the number of the expense to delete: ";
     cin >> choice;
 
-    if(choice <1 || choice>expenses.size()){
+    if (choice < 1 || choice > expenses.size())
+    {
         cout << "\nInvalid  Choice!" << endl;
         return;
     }
     cout << "Are you sure you want to delete: "
-    << expenses[choice-1].description
-    << "? (Y/N): ";
+         << expenses[choice - 1].description
+         << "? (Y/N): ";
 
     char confirm;
     cin >> confirm;
-    if(confirm == 'Y'  || confirm == 'y'){
-        expenses.erase(expenses.begin() + (choice-1));
+    if (confirm == 'Y' || confirm == 'y')
+    {
+        expenses.erase(expenses.begin() + (choice - 1));
         cout << "Expense deleted successfully!" << endl;
-    }else{
+    }
+    else
+    {
         cout << "Deleteion cancelled!" << endl;
     }
 }
 
+void searchExpense(vector<Expense> &expenses)
+{
+    if (expenses.empty())
+    {
+        cout << "No expenses recorded yet!" << endl;
+        return;
+    }
 
+    string searchTerm;
+    cout << "Enter a search term (category): ";
+    cin.ignore();
+    getline(cin, searchTerm);
 
-int main() {
+    bool found = false;
+    cout << "\n----- Search Results -----\n";
+    for (const auto &expense : expenses)
+    {
+        if (
+            expense.category.find(searchTerm) != string::npos)
+        {
+            cout << "Date: " << expense.date << endl;
+            cout << "Description: " << expense.description << endl;
+            cout << "Category: " << expense.category << endl;
+            cout << "Amount: " << expense.amount << endl;
+            cout << "--------------------------\n";
+            found = true;
+        }
+    }
+
+    if (!found)
+    {
+        cout << "No matching expenses found!" << endl;
+    }
+}
+
+int main()
+{
     vector<Expense> expenses;
-    //int choice;
+    int choice;
 
     // Just to test the addExpense and displayExpenses functions!!
-    // do {
-    //     cout << "\n===== Expense Tracker =====\n";
-    //     cout << "1. Add Expense\n";
-    //     cout << "2. Display Expenses\n";
-    //     cout << "3. Exit\n";
-    //     cout << "Enter your choice: ";
-    //     cin >> choice;
+    do {
+        cout << "\n===== Expense Tracker =====\n";
+        cout << "1. Add Expense\n";
+        cout << "2. Display Expenses\n";
+        cout << "3. Search Expenses\n";
+        cout << "4. Delete Expense\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
 
-    //     switch (choice) {
-    //         case 1:
-    //             addExpense(expenses);
-    //             break;
+        switch (choice) {
+            case 1:
+                addExpense(expenses);
+                break;
 
-    //         case 2:
-    //             displayExpenses(expenses);
-    //             break;
+            case 2:
+                displayExpenses(expenses);
+                break;
 
-    //         case 3:
-    //             cout << "Exiting Expense Tracker..." << endl;
-    //             break;
+            case 3:
+                searchExpense(expenses);
+                break;
 
-    //         default:
-    //             cout << "Invalid choice! Try again.\n";
-    //     }
+            case 4:
+                deleteExpense(expenses);
+                break;
 
-    // } while (choice != 3);
-    
-    /*Just to  test the delete function:
+            case 5:
+                cout << "Exiting Expense Tracker..." << endl;
+                break;
+
+            default:
+                cout << "Invalid choice! Try again.\n";
+        }
+
+    } while (choice != 5);
+
+   
     expenses.push_back({"2026-10-12", "Lunch", "Food", 150});
     expenses.push_back({"2026-10-12", "Bus fare", "Transport", 50});
     expenses.push_back({"2026-10-12", "Groceries", "Food", 500});
 
-    Test deleteExpense only
-    deleteExpense(expenses);
-
-    Check the remaining expenses
-    cout << "\nRemaining expenses:\n";
-    displayExpenses(expenses);*/
+  
     return 0;
 }
