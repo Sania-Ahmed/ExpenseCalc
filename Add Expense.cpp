@@ -122,16 +122,16 @@ int main() {
 
     // } while (choice != 3);
     
-    //Just to  test the delete function:
+    /*Just to  test the delete function:
     expenses.push_back({"2026-10-12", "Lunch", "Food", 150});
     expenses.push_back({"2026-10-12", "Bus fare", "Transport", 50});
     expenses.push_back({"2026-10-12", "Groceries", "Food", 500});
 
-    // Test deleteExpense only
+    Test deleteExpense only
     deleteExpense(expenses);
 
-    // Check the remaining expenses
+    Check the remaining expenses
     cout << "\nRemaining expenses:\n";
-    displayExpenses(expenses);
+    displayExpenses(expenses);*/
     return 0;
 }
