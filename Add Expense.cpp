@@ -94,7 +94,7 @@ void deleteExpense(vector<Expense> &expenses)
     }
     else
     {
-        cout << "Deleteion cancelled!" << endl;
+        cout << "Deletion cancelled!" << endl;
     }
 }
 
@@ -133,9 +133,46 @@ void searchExpense(vector<Expense> &expenses)
     }
 }
 
+void viewSummary(const vector<Expense> & expenses){
+    if(expenses.empty()){
+      cout << "No expense to summarize!"  << endl;
+      return;
+    }
+    double total = 0;
+    map <string, double> categoryTotals;
+
+    for(const auto &expense: expenses){
+        total += expense.amount;
+        categoryTotals [expense.category] += expense.amount;
+    }
+    cout << "\n===== Spending Summary =====\n";
+    cout << "Number of expenses: " << expenses.size() << endl;
+    cout << "Total spending: " << total << endl;
+ 
+    cout << "\n----- Spending by Category -----\n";
+
+    for(const auto &item : categoryTotals){
+        cout << item.first << ": " << item.second << endl;
+    }
+    auto highest = categoryTotals.begin();
+    
+    for(auto it = categoryTotals.begin(); it!= categoryTotals.end(); it++){
+        if(it->second > highest->second){
+            highest = it;
+        }
+    }
+    cout << "\nHighest Spending Category: " << highest->first <<" (" << highest->second <<")\n";
+
+}
+
 int main()
 {
     vector<Expense> expenses;
+     
+    expenses.push_back({"2026-10-12", "Lunch", "Food", 150});
+    expenses.push_back({"2026-10-12", "Bus fare", "Transport", 50});
+    expenses.push_back({"2026-10-12", "Groceries", "Food", 500});
+    
     int choice;
 
     // Just to test the addExpense and displayExpenses functions!!
@@ -145,7 +182,8 @@ int main()
         cout << "2. Display Expenses\n";
         cout << "3. Search Expenses\n";
         cout << "4. Delete Expense\n";
-        cout << "5. Exit\n";
+        cout << "5. Get Summary\n";
+        cout << "6. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -165,8 +203,12 @@ int main()
             case 4:
                 deleteExpense(expenses);
                 break;
-
+            
             case 5:
+                viewSummary(expenses);
+                break;
+
+            case 6:
                 cout << "Exiting Expense Tracker..." << endl;
                 break;
 
@@ -174,12 +216,9 @@ int main()
                 cout << "Invalid choice! Try again.\n";
         }
 
-    } while (choice != 5);
+    } while (choice != 6);
 
-   
-    expenses.push_back({"2026-10-12", "Lunch", "Food", 150});
-    expenses.push_back({"2026-10-12", "Bus fare", "Transport", 50});
-    expenses.push_back({"2026-10-12", "Groceries", "Food", 500});
+  
 
   
     return 0;
