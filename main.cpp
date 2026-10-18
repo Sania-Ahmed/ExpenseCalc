@@ -164,6 +164,82 @@ void viewSummary(const vector<Expense> & expenses){
     cout << "\nHighest Spending Category: " << highest->first <<" (" << highest->second <<")\n";
 
 }
+//download summary as a text file
+
+void downloadSummary(const vector<Expense> &expenses)
+{
+    if (expenses.empty())
+    {
+        cout << "No expenses to download!" << endl;
+        return;
+    }
+
+    ofstream file("expense_summary.txt");
+
+    if (!file)
+    {
+        cout << "Error creating summary file!" << endl;
+        return;
+    }
+
+    double total = 0;
+    map<string, double> categoryTotals;
+
+    for (const auto &expense : expenses)
+    {
+        total += expense.amount;
+        categoryTotals[expense.category] += expense.amount;
+    }
+
+    auto highest = categoryTotals.begin();
+
+    for (auto it = categoryTotals.begin();
+         it != categoryTotals.end(); it++)
+    {
+        if (it->second > highest->second)
+        {
+            highest = it;
+        }
+    }
+
+    file << "===== EXPENSE TRACKER SUMMARY =====\n\n";
+
+    file << "Number of Expenses: "
+         << expenses.size() << endl;
+
+    file << "Total Spending: Tk. "
+         << fixed << setprecision(2) << total << endl;
+
+    file << "\n----- Spending by Category -----\n";
+
+    for (const auto &item : categoryTotals)
+    {
+        file << item.first << ": Tk. "
+             << item.second << endl;
+    }
+
+    file << "\nHighest Spending Category: "
+         << highest->first << " (Tk. "
+         << highest->second << ")\n";
+
+    file << "\n----- All Transactions -----\n";
+
+    for (int i = 0; i < expenses.size(); i++)
+    {
+        file << "\nExpense " << i + 1 << endl;
+        file << "Date: " << expenses[i].date << endl;
+        file << "Description: "
+             << expenses[i].description << endl;
+        file << "Category: " << expenses[i].category << endl;
+        file << "Amount: Tk. " << expenses[i].amount << endl;
+    }
+
+    file.close();
+
+    cout << "Summary downloaded successfully!" << endl;
+    cout << "File: expense_summary.txt" << endl;
+}
+
 
 int main()
 {
@@ -183,7 +259,8 @@ int main()
         cout << "3. Search Expenses\n";
         cout << "4. Delete Expense\n";
         cout << "5. Get Summary\n";
-        cout << "6. Exit\n";
+        cout << "6. Download Summary\n";
+        cout << "7. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -209,6 +286,10 @@ int main()
                 break;
 
             case 6:
+                downloadSummary(expenses);
+                break;
+
+            case 7:
                 cout << "Exiting Expense Tracker..." << endl;
                 break;
 
@@ -216,7 +297,7 @@ int main()
                 cout << "Invalid choice! Try again.\n";
         }
 
-    } while (choice != 6);
+    } while (choice != 7);
 
   
 
